@@ -19,13 +19,13 @@ import (
 // Route is the information for every URI.
 type Route struct {
 	// Name is the name of this Route.
-	Name string
+	Name		string
 	// Method is the string for the HTTP method. ex) GET, POST etc..
-	Method string
+	Method		string
 	// Pattern is the pattern of the URI.
-	Pattern string
+	Pattern	 	string
 	// HandlerFunc is the handler function of this route.
-	HandlerFunc gin.HandlerFunc
+	HandlerFunc	gin.HandlerFunc
 }
 
 // NewRouter returns a new router.
@@ -63,12 +63,26 @@ func DefaultHandleFunc(c *gin.Context) {
 
 type ApiHandleFunctions struct {
 
+	// Routes for the AmbulancesAPI part of the API
+	AmbulancesAPI AmbulancesAPI
 	// Routes for the QuestionnaireAPI part of the API
 	QuestionnaireAPI QuestionnaireAPI
 }
 
 func getRoutes(handleFunctions ApiHandleFunctions) []Route {
-	return []Route{
+	return []Route{ 
+		{
+			"CreateAmbulance",
+			http.MethodPost,
+			"/api/ambulance",
+			handleFunctions.AmbulancesAPI.CreateAmbulance,
+		},
+		{
+			"DeleteAmbulance",
+			http.MethodDelete,
+			"/api/ambulance/:ambulanceId",
+			handleFunctions.AmbulancesAPI.DeleteAmbulance,
+		},
 		{
 			"CreateQuestionnaireEntry",
 			http.MethodPost,
