@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/tomasandel/andel-project-webapi/api"
+	"github.com/tomasandel/andel-project-webapi/internal/ambulance_wl"
 )
 
 func main() {
@@ -22,6 +23,12 @@ func main() {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	// request routings
+
+	handleFunctions := &ambulance_wl.ApiHandleFunctions{
+		QuestionnaireAPI: ambulance_wl.NewAmbulanceQuestionnaireListApi(),
+	}
+	ambulance_wl.NewRouterWithGinEngine(engine, *handleFunctions)
+
 	engine.GET("/openapi", api.HandleOpenApi)
 	engine.Run(":" + port)
 }
